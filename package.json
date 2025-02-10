@@ -22,7 +22,8 @@
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "ioredis": "^5.4.2"
   },
   "devDependencies": {
     "@types/node": "^22.13.1",
