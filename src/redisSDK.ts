@@ -7,12 +7,42 @@ export class RedisSDK {
   private service: string;
   private environment: string;
 
-  constructor(serviceName: string, environment: string = "dev") {
-    const redisConfig: RedisOptions = { host: "127.0.0.1", port: 6379 , db: 0};
+
+  /***
+   * @constructor
+   * @param {string} serviceName - **(Required)** The name of the service using the Redis client by default unknown service.
+   * @param [environment] - The environment in which the service is running, like dev, qa, prod, stag etc.
+   *
+   * @description This class is used to interact with Redis. It provides methods to set, get, and delete values from Redis. 
+   * 
+   * @example
+   * const redisClient = new RedisSDK("myService", "prod");
+   */
+  constructor(serviceName: string = 'unknown', environment: string = "dev") {
+    const redisConfig: RedisOptions = { host: "127.0.0.1", port: 6379, db: 0 };
     this.client = new Redis(redisConfig);
     this.service = serviceName;
     this.environment = environment;
   }
+
+  /**
+   *  Set a value in Redis using a dynamically generated key.
+   * 
+   * @param {KeyObject} keyObject - The object used to construct the Redis key.
+   * @param {string} keyObject.key - **(Required)** Unique identifier for the stored key.
+   * @param {string} [keyObject.appId] - **(Optional)** AppID/WacID for App Identification.
+   * @param {string} [keyObject.userId] - **(Optional)** User ID for personalization If Required.
+   * @returns {Promise<boolean>} - Resolves to `true` if the value was successfully set, otherwise `false`.
+   *
+   * @description This method sets a value in Redis based on the provided `keyObject`.
+   * 
+   * @example
+   * const keyObject = { key: "session123", appId: "app456", userId: "user789" };
+   * const value = { name: "John Doe", age: 30 };
+   * const result = await redisClient.setValue(keyObject, value);
+   * console.log(result); // Output: true if successful || false if failed
+   * 
+  */
 
   async setValue(
     keyObject: KeyObject,
@@ -34,6 +64,27 @@ export class RedisSDK {
     }
   }
 
+
+  /**
+ * Retrieves a value from Redis using a dynamically generated key.
+ *
+ * @param {KeyObject} keyObject - The object used to construct the Redis key.
+ * @param {string} keyObject.key - **(Required)** Unique identifier for the stored key.
+ * @param {string} [keyObject.appId] - **(Optional)** AppID/WacID for App Identification.
+ * @param {string} [keyObject.userId] - **(Optional)** User ID for personalization If Required.
+ * @returns {Promise<any>} - Resolves to the stored value if found, otherwise `null`.
+ *
+ * @description
+ * This method fetches a value from Redis based on the provided `keyObject`. 
+ * Ensure that the **same key structure** (key, appId, userId) is used when retrieving 
+ * a key that was previously stored.
+ *
+ * @example
+ * const keyObject = { key: "session123", appId: "app456", userId: "user789" };
+ * const value = await redisClient.getValue(keyObject);
+ * console.log(value); // Output: Stored value or null if not found
+ */
+
   async getValue(keyObject: KeyObject): Promise<any> {
     try {
       const key: string = GenerateRedisKey(this.service, keyObject);
@@ -45,6 +96,20 @@ export class RedisSDK {
       return null;
     }
   }
+
+
+
+  /**
+   *  @param {KeyObject} keyObject - The object used to construct the Redis key.
+   *  @return {Promise<boolean>} - Resolves to `true` if the value was successfully deleted, otherwise `false`.
+   * 
+   * @description This method deletes a value from Redis based on the provided `keyObject`.
+   * 
+   * @example
+   * const keyObject = { key: "session123", appId: "app456", userId: "user789" };
+   * const result = await redisClient.deleteValue(keyObject);
+   * console.log(result); // Output: true if successful || false if failed
+  */
 
   async deleteValue(keyObject: KeyObject): Promise<boolean> {
     try {
@@ -58,6 +123,18 @@ export class RedisSDK {
     }
   }
 
+
+  /**
+   *  @param {KeyObject} keyObject - The object used to construct the Redis key.
+   *  @return {Promise<boolean>} - Resolves to `true` if the key exists, otherwise `false`.
+   * 
+   * @description This method checks if a key exists in Redis based on the provided `keyObject`.
+   * 
+   * @example
+   * const keyObject = { key: "session123", appId: "app456", userId: "user789" };
+   * const result = await redisClient.keyExists(keyObject);
+   * console.log(result); // Output: true if key exists || false if not found
+  */
   async anotherServiceKey(
     serviceName: string,
     keyObject: KeyObject
