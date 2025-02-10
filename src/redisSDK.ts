@@ -8,7 +8,7 @@ export class RedisSDK {
   private environment: string;
 
   constructor(serviceName: string, environment: string = "dev") {
-    const redisConfig: RedisOptions = { host: "127.0.0.1", port: 6379 };
+    const redisConfig: RedisOptions = { host: "127.0.0.1", port: 6379 , db: 0};
     this.client = new Redis(redisConfig);
     this.service = serviceName;
     this.environment = environment;
