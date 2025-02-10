@@ -2,7 +2,7 @@ import Redis, { RedisOptions } from "ioredis";
 import KeyObject from "./models/keyObject.model";
 import { GenerateRedisKey } from "./factory";
 
-class RedisSDK {
+export class RedisSDK {
   private client: Redis;
   private service: string;
   private environment: string;
@@ -75,5 +75,3 @@ class RedisSDK {
     this.client.quit();
   }
 }
-
-export default RedisSDK;
