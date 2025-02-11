@@ -1,4 +1,5 @@
 import Redis, { RedisOptions } from "ioredis";
+require('dotenv').config();
 
 export class RedisClient {
     private static instance: RedisClient;
@@ -13,28 +14,39 @@ export class RedisClient {
      * @param {number} [options.port] - **(Optional)** The port of the Redis server. Default is 6379.
      * 
      */
-    protected constructor(options?: RedisOptions) {
-        this.options = options || { host: "10.107.241.113", port: 6379 };
-        this.client = new Redis(this.options);
+    public constructor() {
+        this.options = {
+            host: process.env.REDIS_IP || "127.0.0.1",
+            port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
+        };
+        this.client = this.connect();
     }
 
-    public static getInstance(options?: RedisOptions): RedisClient {
+    public connect(): Redis {
+        try {
+            console.log(`Connecting to Redis at ${this.options.host}:${this.options.port}`);
+            return new Redis(this.options);
+        } catch (error) {
+            console.error("Unable to connect to Redis at", this.options.host, "on port", this.options.port, error);
+            throw error;
+        }
+    }
+
+    public static getInstance(): RedisClient {
         if (!RedisClient.instance) {
-            RedisClient.instance = new RedisClient(options);
+            RedisClient.instance = new RedisClient();
         }
         return RedisClient.instance;
     }
 
     public getClient(): Redis {
+        if (!this.client) {
+            throw new Error("Redis client is not initialized!");
+        }
         return this.client;
     }
 
-    public async connect(): Promise<boolean> {
-        if (!this.client) {
-            console.warn("Redis client was not initialized, creating a new instance...");
-            this.client = new Redis();
-        }
-
+    public async isConnect(): Promise<boolean> {
         try {
             const response = await this.client.ping();
             console.log("Connected to Redis successfully with response:", response);
@@ -46,6 +58,9 @@ export class RedisClient {
     }
 
     public close(): void {
-        this.client.quit();
+        if (this.client) {
+            console.log("Closing Redis connection...");
+            this.client.quit();
+        }
     }
 }
