@@ -1,20 +1,18 @@
-import { RedisClient } from "./RedisClient";
-import { APIRedisCache } from "./APIRedisCache";
+export { RedisClient } from "./RedisClient";
+export { APIRedisCache } from "./APIRedisCache";
 
 
-function mainModule(){
+// function mainModule(){
 
-    try {
+//     try {
 
-        const redisClient = RedisClient.getInstance();
-        redisClient.connect();
+//         const redisClient = RedisClient.getInstance();
+//         redisClient.connect();
 
-        const apiRedisCache = new APIRedisCache("test-service", "dev");
-    }
-    catch(err) {
-        console.log("Facing Error while making instance of RedisClient and APIRedisCache");
-    }
+//         const apiRedisCache = new APIRedisCache("test-service", "dev");
+//     }
+//     catch(err) {
+//         console.log("Facing Error while making instance of RedisClient and APIRedisCache");
+//     }
 
-}
-
-mainModule();
+// }
