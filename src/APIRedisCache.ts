@@ -1,4 +1,4 @@
-import Redis from "ioredis";
+import Redis, { RedisOptions }  from "ioredis";
 import { RedisClient } from "./RedisClient";
 import { Request, Response, NextFunction } from "express";
 
@@ -6,13 +6,13 @@ export class APIRedisCache extends RedisClient {
     private service: string;
     private environment: string;
 
-    constructor(serviceName: string = "unknown", environment: string = "dev") {
+    constructor(serviceName: string = "unknown", environment: string = "dev",options?: RedisOptions) {
         super(); // Call RedisClient constructor
         this.service = serviceName;
         this.environment = environment;
         if(!this.client) {
             console.warn("Redis client was not initialized, creating a new instance...");
-            this.client = new Redis({port: 6379, host: "127.0.0.1"});
+            this.client = new Redis(options || {host: "127.0.0.1",port: 6379});
         }
     }
 
