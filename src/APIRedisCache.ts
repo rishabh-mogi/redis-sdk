@@ -1,3 +1,4 @@
+import Redis from "ioredis";
 import { RedisClient } from "./RedisClient";
 import { Request, Response, NextFunction } from "express";
 
@@ -9,6 +10,10 @@ export class APIRedisCache extends RedisClient {
         super(); // Call RedisClient constructor
         this.service = serviceName;
         this.environment = environment;
+        if(!this.client) {
+            console.warn("Redis client was not initialized, creating a new instance...");
+            this.client = new Redis({port: 6379, host: "127.0.0.1"});
+        }
     }
 
     /**
@@ -19,7 +24,7 @@ export class APIRedisCache extends RedisClient {
      * - **DELETE** → Removes data from the cache.
      */
     public cacheMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-        // const cacheRequired = req.headers["cache-required"]; // Check if caching is enabled
+        // const cacheRequired = req.headers["cache-reAPIRedisCachequired"]; // Check if caching is enabled
         // if (!cacheRequired) return next(); // Skip if no cache is required
 
         const cacheKey = req.originalUrl; // Unique cache key based on endpoint URL
