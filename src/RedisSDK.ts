@@ -18,7 +18,7 @@ export class RedisSDK extends RedisClient {
      * 
      */
     constructor(serviceName: string = "unknown", environment: string = "dev", options?: RedisOptions) {
-        super(options); // Call the RedisClient constructor
+        super(); // Call the RedisClient constructor
         this.service = serviceName;
         this.environment = environment;
     }
