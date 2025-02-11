@@ -2,13 +2,13 @@
   "name": "@mogiio/redis-sdk",
   "version": "1.0.0",
   "description": "Centralized Redis SDK for MOGI-IONIC Project so that we can manage all services redis operations in one place",
-  "main": "dist/redisSDK.js",
-  "types": "dist/redisSDK.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node dist/RedisSDK.js",
-    "dev": "nodemon --exec ts-node src/RedisSDK.ts",
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec ts-node src/index.ts",
     "prepare": "npm run build"
   },
   "repository": {
