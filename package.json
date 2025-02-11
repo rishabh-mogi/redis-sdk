@@ -7,8 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "start": "node dist/RedisSDK.js",
+    "dev": "nodemon --exec ts-node src/RedisSDK.ts",
     "prepare": "npm run build"
   },
   "repository": {
@@ -22,10 +22,11 @@
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "nodemon": "^3.1.9",
-    "ioredis": "^5.4.2"
+    "ioredis": "^5.4.2",
+    "nodemon": "^3.1.9"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "@types/node": "^22.13.1",
     "ioredis": "^5.4.2",
     "ts-node": "^10.9.2",

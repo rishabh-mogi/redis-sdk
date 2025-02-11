@@ -19,8 +19,8 @@ export class APIRedisCache extends RedisClient {
      * - **DELETE** → Removes data from the cache.
      */
     public cacheMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-        const cacheRequired = req.headers["cache-required"]; // Check if caching is enabled
-        if (!cacheRequired) return next(); // Skip if no cache is required
+        // const cacheRequired = req.headers["cache-required"]; // Check if caching is enabled
+        // if (!cacheRequired) return next(); // Skip if no cache is required
 
         const cacheKey = req.originalUrl; // Unique cache key based on endpoint URL
 
@@ -31,7 +31,7 @@ export class APIRedisCache extends RedisClient {
                     const cachedData = await this.client.get(cacheKey);
                     if (cachedData) {
                         console.log(`Cache hit for ${cacheKey}`);
-                        return res.json(JSON.parse(cachedData));
+                        return res.send(JSON.parse(cachedData));
                     }
                     console.log(`Cache miss for ${cacheKey}`);
                     break;
@@ -63,15 +63,15 @@ export class APIRedisCache extends RedisClient {
      * Captures the response and stores it in Redis cache.
      */
     private storeCache(req: Request, res: Response, cacheKey: string) {
-        const oldSend = res.json;
-        res.json = async (body: any) => {
-            try {
-                await this.client.set(cacheKey, JSON.stringify(body), "EX", 3600); // Cache for 1 hour
-                console.log(`Cache stored for ${cacheKey}`);
-            } catch (error) {
-                console.error("Error storing cache:", error);
-            }
-            return oldSend.call(res, body);
-        };
+        // const oldSend = res.json;
+        // res.json = async (body: any) => {
+        //     try {
+        //         await this.client.set(cacheKey, JSON.stringify(body), "EX", 3600); // Cache for 1 hour
+        //         console.log(`Cache stored for ${cacheKey}`);
+        //     } catch (error) {
+        //         console.error("Error storing cache:", error);
+        //     }
+        //     return oldSend.call(res, body);
+        // };
     }
 }
