@@ -12,7 +12,7 @@ export class APIRedisCache extends RedisClient {
         this.environment = environment;
         if(!this.client) {
             console.warn("Redis client was not initialized, creating a new instance...");
-            this.client = new Redis(options || {host: "127.0.0.1",port: 6379});
+            this.client = new Redis({host:'10.107.241.113',post:6379});
         }
     }
 

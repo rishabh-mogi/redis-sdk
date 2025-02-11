@@ -14,7 +14,7 @@ export class RedisClient {
      * 
      */
     protected constructor(options?: RedisOptions) {
-        this.options = options || { host: "127.0.0.1", port: 6379 };
+        this.options = options || { host: "10.107.241.113", port: 6379 };
         this.client = new Redis(this.options);
     }
 
