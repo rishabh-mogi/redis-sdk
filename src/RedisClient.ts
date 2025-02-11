@@ -15,6 +15,7 @@ export class RedisClient {
      * 
      */
     public constructor() {
+        console.log("my process.env is ",process.env);
         this.options = {
             host: process.env.REDIS_IP || "127.0.0.1",
             port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
@@ -24,8 +25,9 @@ export class RedisClient {
 
     public connect(): Redis {
         try {
+            this.client = new Redis(this.options);
             console.log(`Connecting to Redis at ${this.options.host}:${this.options.port}`);
-            return new Redis(this.options);
+            return this.client;
         } catch (error) {
             console.error("Unable to connect to Redis at", this.options.host, "on port", this.options.port, error);
             throw error;
