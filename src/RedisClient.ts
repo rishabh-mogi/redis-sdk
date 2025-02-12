@@ -1,5 +1,7 @@
 import Redis, { RedisOptions } from "ioredis";
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
+
 
 export class RedisClient {
     private static instance: RedisClient;
@@ -15,12 +17,12 @@ export class RedisClient {
      * 
      */
     public constructor() {
-        console.log("my process.env is ",process.env);
         this.options = {
             host: process.env.REDIS_IP || "127.0.0.1",
             port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
         };
         this.client = this.connect();
+
     }
 
     public connect(): Redis {
@@ -51,7 +53,6 @@ export class RedisClient {
     public async isConnect(): Promise<boolean> {
         try {
             const response = await this.client.ping();
-            console.log("Connected to Redis successfully with response:", response);
             return response === "PONG";
         } catch (error) {
             console.error("Redis connection error:", error);
